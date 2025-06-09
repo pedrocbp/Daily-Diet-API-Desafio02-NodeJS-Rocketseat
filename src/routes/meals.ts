@@ -129,16 +129,16 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const { mealId } = getMealParamsSchema.parse(request.params)
 
-      const meal = await knex('meals').where({ id: mealId }).first()
+      const meal = await knex('meals')
+        .where('user_id', request.user?.id)
+        .where({ id: mealId })
+        .first()
 
       if (!meal) {
         return response.status(404).send({ error: 'Meal ID not found' })
       }
 
-      await knex('meals')
-        .where('user_id', request.user?.id)
-        .where({ id: mealId })
-        .delete()
+      await knex('meals').where({ id: mealId }).delete()
 
       return response.status(204).send()
     },
