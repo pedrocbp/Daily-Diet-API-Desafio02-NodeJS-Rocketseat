@@ -23,7 +23,6 @@ export async function usersRoutes(app: FastifyInstance) {
         maxAge: 60 * 60 * 24 * 7, // 7 days
       })
     }
-    console.log('🚀 ~ app.post ~ sessionId:', sessionId)
 
     await knex('users').insert({
       id: randomUUID(),
